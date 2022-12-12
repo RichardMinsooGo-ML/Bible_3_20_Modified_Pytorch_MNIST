@@ -130,6 +130,7 @@ def main():
         
         epoch_loss = 0
         train_acc = 0.
+        global_step = 0
         
         '''
         9. Define train loop
@@ -140,6 +141,8 @@ def main():
             Not coded in this implementation.
             '''
             x, t = x.to(configs.device), t.to(configs.device)
+            
+            global_step += 1
 
             preds = model(x)
             total_loss = compute_loss(t, preds)
