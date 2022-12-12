@@ -5,8 +5,9 @@ import torch
 from easydict import EasyDict as edict
 
 def parse_train_configs():
-    parser = argparse.ArgumentParser(description='The Implementation of Pyorch YOLOv3')
+    parser = argparse.ArgumentParser(description='The Implementation of Pyorch MNIST')
     
+    parser.add_argument("--pretrained_path", type=str, default="checkpoints/Mnist.pth", help="if specified starts from checkpoint model")
     # parser.add_argument("--data_config" , type=str,   default="config/custom.data", help="path to data config file")
     parser.add_argument("--working-dir" , type=str, default='./', metavar='PATH', help='The ROOT working directory')
     parser.add_argument("--input_size"  , type=int, default=784, help="input_size 28x28")
@@ -15,6 +16,7 @@ def parse_train_configs():
     parser.add_argument("--num_epochs"  , type=int, default=2, help="number of epochs")
     parser.add_argument("--batch_size"  , type=int, default=4, help="size of each image batch")
     parser.add_argument('--learning_rate', type=float, default=0.0005, help='learning_rate')
+    
     parser.add_argument("--gradient_accumulations", type=int, default=2, help="number of gradient accums before step")
 
     configs = edict(vars(parser.parse_args()))
