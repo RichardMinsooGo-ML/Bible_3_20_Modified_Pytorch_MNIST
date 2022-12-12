@@ -14,7 +14,7 @@ def parse_train_configs():
     parser.add_argument("--output_dim"   , type=int, default=10, help="size of each image dimension")
     parser.add_argument("--num_epochs"   , type=int, default=30, help="number of epochs")
     parser.add_argument("--batch_size"   , type=int, default=100, help="size of each image batch")
-    parser.add_argument('--learning_rate', type=float, default=5e-4, help='learning_rate')
+    parser.add_argument('--learning_rate', type=float, default=0.0005, help='learning_rate')
     configs = edict(vars(parser.parse_args()))
     
     ############## Dataset, logs, Checkpoints dir ######################
