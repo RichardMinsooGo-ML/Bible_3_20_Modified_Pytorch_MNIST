@@ -6,7 +6,6 @@ A. Data Engineering
 1. Import Libraries for Data Engineering
 '''
 
-
 import os, sys, time, datetime, argparse
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
@@ -128,18 +127,21 @@ def main():
         9. Define train loop
         '''
         for (x, t) in train_dataloader:
-            '''
+            """
             Exlore Train_dataloader
             Not coded in this implementation.
-            '''
+			
+			End of exploration.
+            """
             x, t = x.to(configs.device), t.to(configs.device)
             
             global_step += 1
 
             preds = model(x)
             total_loss = compute_loss(t, preds)
-            optimizer.zero_grad()
+            # compute gradient and perform backpropagation
             total_loss.backward()
+            optimizer.zero_grad()
             optimizer.step()
 
             epoch_loss += total_loss.item()
