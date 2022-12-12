@@ -119,7 +119,12 @@ def main():
     11. Define Episode / each step process
     '''
 
-    for epoch in range(configs.num_epochs):
+    start_time = time.time() 
+    for epoch in range(0, configs.num_epochs, 1):
+        
+        num_iters_per_epoch = len(train_dataloader)
+
+        print(num_iters_per_epoch)
 
         # switch to train mode
         model.train()
