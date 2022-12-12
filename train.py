@@ -133,7 +133,7 @@ def main():
     11. Define Episode / each step process
     '''
 
-    for epoch in range(configs.EPOCHS):
+    for epoch in range(configs.num_epochs):
 
         # switch to train mode
         model.train()
