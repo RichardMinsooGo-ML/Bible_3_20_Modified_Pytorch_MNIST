@@ -66,7 +66,6 @@ def main():
     
     np.random.seed(123)
     torch.manual_seed(123)
-    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
     '''
     6. Build NN model
@@ -144,10 +143,14 @@ def main():
 
             preds = model(x)
             total_loss = compute_loss(t, preds)
-            optimizer.zero_grad()
-            total_loss.backward()
-            optimizer.step()
 
+            total_loss.backward()
+            if global_step % configs.gradient_accumulations:
+                
+                optimizer.step()
+
+                optimizer.zero_grad()
+                
             epoch_loss += total_loss.item()
             train_acc += \
                 accuracy_score(t.tolist(),
