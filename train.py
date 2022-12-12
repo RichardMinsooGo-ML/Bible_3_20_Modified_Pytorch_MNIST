@@ -82,8 +82,7 @@ def main():
     '''
     7. Optimizer
     '''
-    # optimizer = optim.SGD(model.parameters(), lr=0.01)
-    optimizer = torch.optim.Adam(model.parameters(), lr=configs.learning_rate)
+    optimizer = torch.optim.Adam(model.parameters())
     
     '''
     X. Metrics
@@ -92,8 +91,9 @@ def main():
     
     '''
     7. learning rate scheduler
-    # Skip for this implementation
     '''
+    # learning rate scheduler config
+    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.8)
     
     '''
     
