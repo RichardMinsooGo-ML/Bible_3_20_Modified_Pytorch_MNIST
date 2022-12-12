@@ -33,6 +33,9 @@ def main():
     '''
     4. Set Hyperparameters
     '''
+    # input_size = 784 # 28x28
+    # hidden_size = 200
+    # output_dim = 10  # output layer dimensionality
     # Get data configuration
     configs = parse_train_configs()
     
@@ -69,15 +72,15 @@ def main():
     6. Build NN model
     '''
     class Feed_Forward_Net(nn.Module):
-        def __init__(self, configs.input_size, configs.hidden_size, configs.output_dim):
+        def __init__(self, input_size, hidden_size, output_dim):
             super().__init__()
-            self.l1 = nn.Linear(configs.input_size, configs.hidden_size)
+            self.l1 = nn.Linear(input_size, hidden_size)
             self.a1 = nn.Sigmoid()
-            self.l2 = nn.Linear(configs.hidden_size, configs.hidden_size)
+            self.l2 = nn.Linear(hidden_size, hidden_size)
             self.a2 = nn.Sigmoid()
-            self.l3 = nn.Linear(configs.hidden_size, configs.hidden_size)
+            self.l3 = nn.Linear(hidden_size, hidden_size)
             self.a3 = nn.Sigmoid()
-            self.l4 = nn.Linear(configs.hidden_size, configs.output_dim)
+            self.l4 = nn.Linear(hidden_size, output_dim)
 
             self.layers = [self.l1, self.a1,
                            self.l2, self.a2,
