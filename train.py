@@ -18,11 +18,9 @@ import torchvision
 from torchvision import datasets
 # import torchvision.transforms as transforms
 from torchvision import transforms
-
+import torch.optim as optim
 from sklearn.metrics import accuracy_score
 import torch.nn as nn
-import torch.optim as optim
-
 import numpy as np
 
 from models.models import *
@@ -33,9 +31,6 @@ def main():
     '''
     4. Set Hyperparameters
     '''
-    # input_size = 784 # 28x28
-    # hidden_size = 200
-    # output_dim = 10  # output layer dimensionality
     # Get data configuration
     configs = parse_train_configs()
     
@@ -56,13 +51,7 @@ def main():
                                 train=False,
                                 transform=transform)
 
-    '''
-    B. Model Engineering
-    '''
 
-    '''
-    3. Import Libraries for Model Engineering
-    '''
     
     np.random.seed(123)
     torch.manual_seed(123)
@@ -70,7 +59,7 @@ def main():
     '''
     6. Build NN model
     '''
-
+    
     model = Feed_Forward_Net(configs.input_size, configs.hidden_size, configs.output_dim)
     # model.apply(weights_init_normal)
     # model.print_network()
@@ -80,6 +69,9 @@ def main():
     6. Load Pre-trained data
     # Skip for this implementation
     '''    
+    print(configs.pretrained_path)
+    assert os.path.isfile(configs.pretrained_path), "No file at {}".format(configs.pretrained_path)
+    
     '''
     7. Optimizer
     '''
