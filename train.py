@@ -72,8 +72,7 @@ def main():
     '''
     7. Optimizer
     '''
-    # optimizer = optim.SGD(model.parameters(), lr=0.01)
-    optimizer = torch.optim.Adam(model.parameters(), lr=configs.learning_rate)
+    optimizer = torch.optim.Adam(model.parameters())
     
     '''
     X. Metrics
@@ -139,12 +138,15 @@ def main():
 
             preds = model(x)
             total_loss = compute_loss(t, preds)
+            epoch_loss += total_loss.item()
+            optimizer.zero_grad()
             # compute gradient and perform backpropagation
             total_loss.backward()
-            optimizer.zero_grad()
             optimizer.step()
+            # Adjust learning rate
+            lr_scheduler.step()
 
-            epoch_loss += total_loss.item()
+
             train_acc += \
                 accuracy_score(t.tolist(),
                 preds.argmax(dim=-1).tolist())
