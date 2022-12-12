@@ -119,10 +119,10 @@ def main():
     5. DataLoader
     '''
     train_dataloader = DataLoader(dataset=train_dataset,
-        configs.batch_size=configs.batch_size, 
+        batch_size=configs.batch_size, 
         shuffle=True)
     test_dataloader = DataLoader(dataset=test_dataset,
-        configs.batch_size=configs.batch_size, 
+        batch_size=configs.batch_size, 
         shuffle=False)
     
     '''
