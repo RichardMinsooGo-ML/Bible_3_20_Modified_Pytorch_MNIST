@@ -63,7 +63,7 @@ def main():
     
     np.random.seed(123)
     torch.manual_seed(123)
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
     '''
     6. Build NN model
@@ -90,7 +90,7 @@ def main():
 
             return x
 
-    model = Feed_Forward_Net(configs.input_size, configs.hidden_size, configs.output_dim).to(device)
+    model = Feed_Forward_Net(configs.input_size, configs.hidden_size, configs.output_dim).to(configs.device)
     '''
     6. Load Pre-trained data
     # Skip for this implementation
@@ -149,7 +149,7 @@ def main():
             Exlore Train_dataloader
             Not coded in this implementation.
             '''
-            x, t = x.to(device), t.to(device)
+            x, t = x.to(configs.device), t.to(configs.device)
 
             preds = model(x)
             total_loss = compute_loss(t, preds)
@@ -179,7 +179,7 @@ def main():
     test_acc = 0.
 
     for (x, t) in test_dataloader:
-        x, t = x.to(device), t.to(device)
+        x, t = x.to(configs.device), t.to(configs.device)
         # loss, preds = test_step(x, t)
         '''
         10. Define validation / test loop
