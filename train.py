@@ -69,20 +69,12 @@ def main():
     6. Load Pre-trained data
     '''    
     print(configs.pretrained_path)
-    assert os.path.isfile(configs.pretrained_path), "No file at {}".format(configs.pretrained_path)
-
-    # If specified we start from checkpoint
-    if configs.pretrained_path:
-        if configs.pretrained_path.endswith(".pth"):
-            model.load_state_dict(torch.load(configs.pretrained_path))
-            print("Trained pytorch weight loaded!")
-        else:
-            print("There is no trained weight!")
     
     '''
     7. Optimizer
     '''
-    optimizer = torch.optim.Adam(model.parameters())
+    # optimizer = optim.SGD(model.parameters(), lr=0.01)
+    optimizer = torch.optim.Adam(model.parameters(), lr=configs.learning_rate)
     
     '''
     X. Metrics
@@ -146,30 +138,11 @@ def main():
 
             preds = model(x)
             total_loss = compute_loss(t, preds)
+            optimizer.zero_grad()
+            total_loss.backward()
+            optimizer.step()
 
             epoch_loss += total_loss.item()
-            '''
-            '''            
-            # compute gradient and perform backpropagation
-            total_loss.backward()
-
-            if global_step % configs.gradient_accumulations:
-                '''
-                '''
-                # Accumulates gradient before each step
-                optimizer.step()
-                
-                '''
-                '''
-                # Adjust learning rate
-                lr_scheduler.step()
-
-                '''
-                '''
-                # zero the parameter gradients
-                optimizer.zero_grad()
-            
-                
             train_acc += \
                 accuracy_score(t.tolist(),
                 preds.argmax(dim=-1).tolist())
