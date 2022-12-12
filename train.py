@@ -67,10 +67,17 @@ def main():
     
     '''
     6. Load Pre-trained data
-    # Skip for this implementation
     '''    
     print(configs.pretrained_path)
     assert os.path.isfile(configs.pretrained_path), "No file at {}".format(configs.pretrained_path)
+
+    # If specified we start from checkpoint
+    if configs.pretrained_path:
+        if configs.pretrained_path.endswith(".pth"):
+            model.load_state_dict(torch.load(configs.pretrained_path))
+            print("Trained pytorch weight loaded!")
+        else:
+            print("There is no trained weight!")
     
     '''
     7. Optimizer
@@ -92,7 +99,8 @@ def main():
     
     5. DataLoader
     '''
-    train_dataloader = DataLoader(dataset=train_dataset,
+    train_dataloader = DataLoader(
+        dataset=train_dataset,
         batch_size=configs.batch_size, 
         shuffle=True)
     test_dataloader = DataLoader(dataset=test_dataset,
@@ -139,14 +147,29 @@ def main():
             preds = model(x)
             total_loss = compute_loss(t, preds)
 
-            total_loss.backward()
-            if global_step % configs.gradient_accumulations:
-                
-                optimizer.step()
-
-                optimizer.zero_grad()
-                
             epoch_loss += total_loss.item()
+            '''
+            '''            
+            # compute gradient and perform backpropagation
+            total_loss.backward()
+
+            if global_step % configs.gradient_accumulations:
+                '''
+                '''
+                # Accumulates gradient before each step
+                optimizer.step()
+                
+                '''
+                '''
+                # Adjust learning rate
+                lr_scheduler.step()
+
+                '''
+                '''
+                # zero the parameter gradients
+                optimizer.zero_grad()
+            
+                
             train_acc += \
                 accuracy_score(t.tolist(),
                 preds.argmax(dim=-1).tolist())
