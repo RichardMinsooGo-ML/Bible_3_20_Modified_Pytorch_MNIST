@@ -71,29 +71,12 @@ def main():
     '''
     6. Build NN model
     '''
-    class Feed_Forward_Net(nn.Module):
-        def __init__(self, input_size, hidden_size, output_dim):
-            super().__init__()
-            self.l1 = nn.Linear(input_size, hidden_size)
-            self.a1 = nn.Sigmoid()
-            self.l2 = nn.Linear(hidden_size, hidden_size)
-            self.a2 = nn.Sigmoid()
-            self.l3 = nn.Linear(hidden_size, hidden_size)
-            self.a3 = nn.Sigmoid()
-            self.l4 = nn.Linear(hidden_size, output_dim)
 
-            self.layers = [self.l1, self.a1,
-                           self.l2, self.a2,
-                           self.l3, self.a3,
-                           self.l4]
-
-        def forward(self, x):
-            for layer in self.layers:
-                x = layer(x)
-
-            return x
-
-    model = Feed_Forward_Net(configs.input_size, configs.hidden_size, configs.output_dim).to(configs.device)
+    model = Feed_Forward_Net(configs.input_size, configs.hidden_size, configs.output_dim)
+    # model.apply(weights_init_normal)
+    # model.print_network()
+    model = model.to(configs.device)
+    
     '''
     6. Load Pre-trained data
     # Skip for this implementation
