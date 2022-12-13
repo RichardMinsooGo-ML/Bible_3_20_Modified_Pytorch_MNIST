@@ -36,7 +36,8 @@ def main():
     print(configs.device)
     
     '''
-    2. Load MNIST data
+    2. Data Engineering
+    = Load MNIST data
     '''
     root = os.path.join('~', '.torch', 'mnist')
     transform = transforms.Compose([transforms.ToTensor(),
@@ -49,8 +50,6 @@ def main():
                                 download=True,
                                 train=False,
                                 transform=transform)
-
-
     
     np.random.seed(123)
     torch.manual_seed(123)
@@ -93,8 +92,11 @@ def main():
     train_dataloader = DataLoader(
         dataset=train_dataset,
         batch_size=configs.batch_size, 
-        shuffle=True)
-    test_dataloader = DataLoader(dataset=test_dataset,
+        shuffle=True,
+		)
+    
+    test_dataloader = DataLoader(
+        dataset=test_dataset,
         batch_size=configs.batch_size, 
         shuffle=False)
     
@@ -139,6 +141,7 @@ def main():
 
             preds = model(x)
             total_loss = compute_loss(t, preds)
+            
             epoch_loss += float(total_loss.item())
             '''
             '''            
@@ -155,11 +158,19 @@ def main():
                 '''
                 # zero the parameter gradients
                 optimizer.zero_grad()
-
+            
             train_acc += \
                 accuracy_score(t.tolist(),
                 preds.argmax(dim=-1).tolist())
 
+            """
+            Metric Table and Log progress 
+            """
+                
+            """
+            End of Metric Table and Log progress 
+            """
+            
         crnt_epoch_loss = epoch_loss/num_iters_per_epoch
         train_acc /= num_iters_per_epoch
         torch.save(model.state_dict(), configs.save_path)
