@@ -142,8 +142,10 @@ def main():
             epoch_loss += float(total_loss.item())
             # compute gradient and perform backpropagation
             total_loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
+
+            if global_step % configs.gradient_accumulations:
+                optimizer.step()
+                optimizer.zero_grad()
 
             train_acc += \
                 accuracy_score(t.tolist(),
