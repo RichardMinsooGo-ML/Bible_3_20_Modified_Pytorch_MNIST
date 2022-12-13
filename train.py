@@ -184,6 +184,8 @@ def main():
     '''
     12. Model evaluation
     '''
+    # switch to evaluation mode
+    model.eval()
 
     test_loss = 0.
     test_acc = 0.
@@ -194,11 +196,11 @@ def main():
         '''
         10. Define validation / test loop
         '''
-        model.eval()
+        # model.eval()
         preds = model(x)
-        loss = compute_loss(t, preds)
+        total_loss = compute_loss(t, preds)
         
-        test_loss += loss.item()
+        test_loss += float(total_loss.item())
         test_acc += \
             accuracy_score(t.tolist(),
                            preds.argmax(dim=-1).tolist())
