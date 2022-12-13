@@ -140,11 +140,20 @@ def main():
             preds = model(x)
             total_loss = compute_loss(t, preds)
             epoch_loss += float(total_loss.item())
+            '''
+            '''            
             # compute gradient and perform backpropagation
             total_loss.backward()
 
             if global_step % configs.gradient_accumulations:
+                '''
+                '''
+                # Accumulates gradient before each step
                 optimizer.step()
+
+                '''
+                '''
+                # zero the parameter gradients
                 optimizer.zero_grad()
 
             train_acc += \
@@ -186,7 +195,15 @@ def main():
     test_loss /= len(test_dataloader)
     test_acc /= len(test_dataloader)
     print('test_loss: {:.3f}, test_acc: {:.3f}'.format(test_loss, test_acc ))
-            
+    
+    #-------------------------------------------------------------------------------------
+    """
+    # Save checkpoint
+    if (epoch+1) % configs.checkpoint_freq == 0:
+        torch.save(model.state_dict(), configs.save_path)
+        print('save a checkpoint at {}'.format(configs.save_path))
+    """
+
 if __name__ == '__main__':
     main()
     
