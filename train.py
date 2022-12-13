@@ -72,7 +72,8 @@ def main():
     '''
     7. Optimizer
     '''
-    optimizer = torch.optim.Adam(model.parameters())
+    # optimizer = optim.SGD(model.parameters(), lr=0.01)
+    optimizer = torch.optim.Adam(model.parameters(), lr=configs.learning_rate)
     
     '''
     X. Metrics
@@ -129,8 +130,8 @@ def main():
             """
             Exlore Train_dataloader
             Not coded in this implementation.
-			
-			End of exploration.
+            
+            End of exploration.
             """
             x, t = x.to(configs.device), t.to(configs.device)
             
@@ -138,27 +139,25 @@ def main():
 
             preds = model(x)
             total_loss = compute_loss(t, preds)
-            epoch_loss += total_loss.item()
-            optimizer.zero_grad()
+            epoch_loss += float(total_loss.item())
             # compute gradient and perform backpropagation
             total_loss.backward()
             optimizer.step()
-            # Adjust learning rate
-            lr_scheduler.step()
-
+            optimizer.zero_grad()
 
             train_acc += \
                 accuracy_score(t.tolist(),
                 preds.argmax(dim=-1).tolist())
 
-        epoch_loss /= len(train_dataloader)
-        train_acc /= len(train_dataloader)
-
-        print('epoch: {}, loss: {:.3}, acc: {:.3f}'.format(
-            epoch+1,
-            epoch_loss,
-            train_acc
-        ))
+        crnt_epoch_loss = epoch_loss/num_iters_per_epoch
+        train_acc /= num_iters_per_epoch
+        torch.save(model.state_dict(), configs.save_path)
+        # global_epoch += 1
+        
+        # print("Global_epoch :",global_epoch, "Current epoch loss : {:1.5f}".format(crnt_epoch_loss),'Saved at {}'.format(configs.save_path))
+        print("Current epoch loss : {:1.5f}".format(crnt_epoch_loss),'Saved at {}'.format(configs.save_path))
+        
+        print('epoch: {}, loss: {:.3}, acc: {:.3f}'.format( epoch+1, crnt_epoch_loss, train_acc ))
     
     '''
     12. Model evaluation
@@ -177,7 +176,6 @@ def main():
         preds = model(x)
         loss = compute_loss(t, preds)
         
-        
         test_loss += loss.item()
         test_acc += \
             accuracy_score(t.tolist(),
@@ -185,10 +183,7 @@ def main():
 
     test_loss /= len(test_dataloader)
     test_acc /= len(test_dataloader)
-    print('test_loss: {:.3f}, test_acc: {:.3f}'.format(
-        test_loss,
-        test_acc
-    ))
+    print('test_loss: {:.3f}, test_acc: {:.3f}'.format(test_loss, test_acc ))
             
 if __name__ == '__main__':
     main()
