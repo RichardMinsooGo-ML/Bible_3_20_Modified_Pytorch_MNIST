@@ -13,14 +13,11 @@ import torch
 
 import tqdm
 from torch.utils.data import DataLoader
-import torchvision
-from torchvision import datasets
-# import torchvision.transforms as transforms
 from torchvision import transforms
 import torch.optim as optim
+import torchvision
+from torchvision import datasets
 from sklearn.metrics import accuracy_score
-import torch.nn as nn
-import numpy as np
 
 from models.models import *
 from config.train_config import parse_train_configs
@@ -51,8 +48,6 @@ def main():
                                 train=False,
                                 transform=transform)
     
-    np.random.seed(123)
-    torch.manual_seed(123)
     
     '''
     6. Build NN model
@@ -82,8 +77,7 @@ def main():
     '''
     7. learning rate scheduler
     '''
-    # learning rate scheduler config
-    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.8)
+    # Not Applied in this IMPL
     
     '''
     
@@ -182,8 +176,11 @@ def main():
         print('epoch: {}, loss: {:.3}, acc: {:.3f}'.format( epoch+1, crnt_epoch_loss, train_acc ))
     
     '''
-    12. Model evaluation
+    Test Loop
     '''
+    num_iters_per_epoch = len(test_dataloader)
+
+    print(num_iters_per_epoch)
     # switch to evaluation mode
     model.eval()
 
@@ -196,17 +193,18 @@ def main():
         '''
         10. Define validation / test loop
         '''
-        # model.eval()
         preds = model(x)
         total_loss = compute_loss(t, preds)
-        
+
         test_loss += float(total_loss.item())
         test_acc += \
             accuracy_score(t.tolist(),
                            preds.argmax(dim=-1).tolist())
 
-    test_loss /= len(test_dataloader)
-    test_acc /= len(test_dataloader)
+    test_loss /= num_iters_per_epoch
+    test_acc /= num_iters_per_epoch
+
+    print("Current epoch loss : {:1.5f}".format(test_loss),'Saved at {}'.format(configs.save_path))
     print('test_loss: {:.3f}, test_acc: {:.3f}'.format(test_loss, test_acc ))
     
     #-------------------------------------------------------------------------------------
