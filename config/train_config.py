@@ -8,6 +8,8 @@ def parse_train_configs():
     parser = argparse.ArgumentParser(description='The Implementation of Pyorch MNIST')
     
     parser.add_argument("--pretrained_path", type=str, default="checkpoints/Mnist.pth", help="if specified starts from checkpoint model")
+    parser.add_argument("--save_path", type=str, default="checkpoints/Mnist.pth", help="if specified starts from checkpoint model")
+    
     # parser.add_argument("--data_config" , type=str,   default="config/custom.data", help="path to data config file")
     parser.add_argument("--working-dir" , type=str, default='./', metavar='PATH', help='The ROOT working directory')
     parser.add_argument("--input_size"  , type=int, default=784, help="input_size 28x28")
