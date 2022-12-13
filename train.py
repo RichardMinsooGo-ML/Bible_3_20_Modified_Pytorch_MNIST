@@ -87,12 +87,13 @@ def main():
         dataset=train_dataset,
         batch_size=configs.batch_size, 
         shuffle=True,
-		)
+    )
     
     test_dataloader = DataLoader(
         dataset=test_dataset,
         batch_size=configs.batch_size, 
-        shuffle=False)
+        shuffle=False,
+    )
     
     '''
     8. Define Loss Fumction
